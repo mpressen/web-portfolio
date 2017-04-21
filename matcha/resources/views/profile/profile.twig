@@ -1,0 +1,502 @@
+{% extends 'templates/app.twig' %}
+
+{% block cssAfterExt %}
+    <link rel="stylesheet" href="assets/css/jquery.tag-editor.css">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
+            </li>
+            <li role="presentation">
+                <a href="#location" aria-controls="location" role="tab" data-toggle="tab">Location</a>
+            </li>
+            <li role="presentation">
+                <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab">Album</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="profile">
+                <br/>
+                <div class="form-group email">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="you@domain.com" class="form-control" value="{{ user.email }}">
+                    <span class="email"></span>
+                </div>
+                <div class="form-group firstname">
+                    <label for="firstname">First name</label>
+                    <input type="text" name="firstname" id="firstname" placeholder="François" class="form-control" value="{{ user.firstname }}">
+                    <span class="firstname"></span>
+                </div>
+                <div class="form-group lastname">
+                    <label for="lastname">Last name</label>
+                    <input type="text" name="lastname" id="lastname" placeholder="Hollande" class="form-control" value="{{ user.lastname }}">
+                    <span class="lastname"></span>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group age">
+                        <label for="age">Age</label>
+                        <input id="age" type="text" class="form-control" name="age" min="18" max="150" step="1" value="{{ user.age }}">
+                        <span class="age"></span>
+                    </div>
+                    <div class="form-group gender">
+                        <label for="gender">Gender</label>
+                        <select id="gender" class="form-control" name="gender">
+                            <option value="blank"></option>
+                            <option value="male" {% if user.gender == 'male' %} selected {% endif %}>Male</option>
+                            <option value="female" {% if user.gender == 'female' %} selected{% endif %}>Female</option>
+                        </select>
+                        <span class="gender"></span>
+                    </div>
+                    <div class="form-group attraction">
+                        <label for="attraction">Attraction</label>
+                        <select id="attraction" class="form-control" name="attraction">
+                            <option value="bisexual" {% if user.attraction == 'bisexual' %} selected {% endif %}>bisexual</option>
+                            <option value="heterosexual" {% if user.attraction == 'heterosexual' %} selected {% endif %}>heterosexual</option>
+                            <option value="homosexual" {% if user.attraction == 'homosexual' %} selected {% endif %}>homosexual</option>
+                        </select>
+                        <span class="attraction"></span>
+                    </div>
+                </div>
+                <div class="form-group bio">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" class="form-control" rows="8">{{ user.bio }}</textarea>
+                    <span class="bio"></span>
+                </div>
+                <div class="form-group tag">
+                    <label for="tag">Center of interest</label>
+                    <div class="form-group" id="tagscontainer">
+                        <input id="tag" name="tags" type="text">
+                    </div>
+                </div>
+<a href="{{ path_for('auth.password.change') }}" class="btn btn-primary" role="button">Change password</a>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="location">
+                <br/>
+                <div class="form-group">
+                    <label for="postalcode">Postal code</label>
+                    <input type="text" name="postalcode" id="postalcode" placeholder="75000" class="form-control input-md" value="{{ user.postalcode }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="locality">City</label>
+                    <input type="text" name="locality" id="locality" placeholder="Paris" class="form-control input-md" value="{{ user.locality }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" name="country" id="country" placeholder="France" class="form-control input-md" value="{{ user.country }}">
+                </div>
+                <input type="submit" name="submitLocation" class="btn btn-default btn-md" value="save">
+                <input type="button" name="locate" class="btn btn-primary btn-md" value="Locate me">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="photo">
+                <br/>
+                <div class="panel panel-default">
+                <div class="panel-heading">Click on the image you want to edit</div>
+                <br/>
+                <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-2 col-xs-10 col-sm-offset-1 col-xs-offset-1 app-margin-bottom app-vertical-center">
+                        <label class="radio-inline"><input class="hide" type="radio" name="optradio" value="1" checked><img class="img-responsive" id="img1" src="{% if gallery[1] is empty %}./assets/img/upload-logo.png{% else %}{{ gallery[1] }}{% endif %}"></label>
+                    </div>
+                    <div class="col-sm-2 col-xs-10 col-sm-offset-0 col-xs-offset-1 app-margin-bottom app-vertical-center">
+                        <label class="radio-inline"><input class="hide" type="radio" name="optradio" value="2"><img class="img-responsive inactive" id="img2" src="{% if gallery[2] is empty %}./assets/img/upload-logo.png{% else %}{{ gallery[2] }}{% endif %}"></label>
+                    </div>
+                    <div class="col-sm-2 col-xs-10 col-sm-offset-0 col-xs-offset-1 app-margin-bottom app-vertical-center">
+                        <label class="radio-inline"><input class="hide" type="radio" name="optradio" value="3"><img class="img-responsive inactive" id="img3" src="{% if gallery[3] is empty %}./assets/img/upload-logo.png{% else %}{{ gallery[3] }}{% endif %}"></label>
+                    </div>
+                    <div class="col-sm-2 col-xs-10 col-sm-offset-0 col-xs-offset-1 app-margin-bottom app-vertical-center">
+                        <label class="radio-inline"><input class="hide" type="radio" name="optradio" value="4"><img class="img-responsive inactive" id="img4" src="{% if gallery[4] is empty %}./assets/img/upload-logo.png{% else %}{{ gallery[4] }}{% endif %}"></label>
+                    </div>
+                    <div class="col-sm-2 col-xs-10 col-sm-offset-0 col-xs-offset-1 app-margin-bottom app-vertical-center">
+
+                        <label class="radio-inline"><input class="hide" type="radio" name="optradio" value="5"><img class="img-responsive inactive" id="img5" src="{% if gallery[5] is empty %}./assets/img/upload-logo.png{% else %}{{ gallery[5] }}{% endif %}"></label>
+                    </div>
+                </div>
+            </div>
+                <span id="img_selected" class="hide">1</span>
+                <br />
+                <br />
+                <br />
+
+                </div>
+                <div class="alert alert-info">               <strong>Authorized formats</strong>: .png, .jpg, .jpeg, .gif<br/>Profile picture is framed in blue</div>
+
+                <div class="input-group file">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary">
+                            Browse&hellip;
+                            <input id="file" type="file" style="display: none;">
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                <br />
+                <div>
+                    <button id="delete_Picture" type="button" class="btn btn-primary">Delete Picture</button>
+                    <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                    <button id="set_Profile_Picture" type="button" class="btn btn-primary">Set as Profile Picture</button>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <a href="/user/{{ user.id }}" class="btn btn-success pull-right" role="button">See my profile as a guest</a>
+    </div>
+{% endblock %}
+
+{% block scriptAfterExt %}
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <script src="assets/js/jquery.caret.min.js"></script>
+    <script src="assets/js/bootstrap-notify.min.js"></script>
+    <script src="assets/js/jquery.tag-editor.min.js"></script>
+    <script src="assets/js/show-bs-notification.js"></script>
+    <script src="assets/js/notification.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $.post("profile/img/getProfilePic", function(data, status){
+                var pic_to_change = '#img' + data;
+                $(pic_to_change).attr("style", "border: solid 4px #337ab7;");
+            });
+            //************************** PROFILE *************************//
+            $('input').filter('#email, #firstname, #lastname').change(function() {
+                let id = $(this).attr('id');
+                $.post("profile/" + id + "/update", {
+                    val: this.value
+                }, function(data, status) {
+                    var ret = JSON.parse(data);
+                    if (status == "success") {
+                        $("div." + id + " div.alert").remove();
+                        if (ret.status == "error") {
+                            $("#" + id + "").val(ret.old);
+                            $("div." + id).append('<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + ret.message + '</div>');
+                            showNotification('Your ' + id + ' has not been saved.', 'danger');
+                        } else {
+                            $("div." + id).addClass("has-success has-feedback");
+                            $("span." + id).addClass("glyphicon glyphicon-ok form-control-feedback");
+                            showNotification('Your ' + id + ' has been saved.', 'success');
+                        }
+                    }
+                });
+            });
+
+            $('#age').change(function() {
+                let id = $(this).attr('id');
+                $.post("profile/age/update", {
+                    age: this.value
+                }, function(data, status) {
+                    var ret = JSON.parse(data);
+                    if (status == "success") {
+                        $("div.tab-pane div.alert").remove();
+                        if (ret.status == "error") {
+                            $("#age").val(ret.old);
+                            showNotification('Your ' + id + ' has not been saved.', 'danger');
+                        } else {
+                            $("div.age div.alert").remove();
+                            $("div.age").addClass("has-success");
+                            showNotification('Your ' + id + ' has been saved.', 'success');
+                        }
+                    }
+                });
+            });
+
+            $('#gender').change(function() {
+                let id = $(this).attr('id');
+                $.post("profile/gender/update", {
+                    gender: this.value
+                }, function(data, status) {
+                    var ret = JSON.parse(data);
+                    if (status == "success") {
+                        $("div.tab-pane div.alert").remove();
+                        if (ret.status == "error") {
+                            $("#gender").val(ret.old);
+                            showNotification('Your ' + id + ' has not been saved.', 'danger');
+                        } else {
+                            $("div.gender div.alert").remove();
+                            $("div.gender").addClass("has-success");
+                            showNotification('Your ' + id + ' has been saved.', 'success');
+                        }
+                    }
+                });
+            });
+
+            $('#attraction').change(function() {
+                let id = $(this).attr('id');
+                $.post("profile/attraction/update", {
+                    attraction: this.value
+                }, function(data, status) {
+                    var ret = JSON.parse(data);
+                    if (status == "success") {
+                        $("div.tab-pane div.alert").remove();
+                        if (ret.status == "error") {
+                            $("#attraction").val(ret.old);
+                            showNotification('Your ' + id + ' has not been saved.', 'danger');
+                        } else {
+                            $("div.attraction div.alert").remove();
+                            $("div.attraction").addClass("has-success");
+                            showNotification('Your ' + id + ' has been saved.', 'success');
+                        }
+                    }
+                });
+            });
+
+            $('#bio').change(function() {
+                let id = $(this).attr('id');
+                $.post("profile/bio/update", {
+                    bio: this.value
+                }, function(data, status) {
+                    var ret = JSON.parse(data);
+                    if (status == "success") {
+                        $("div.bio div.alert").remove();
+                        if (ret.status == "error") {
+                            $("#bio").val(ret.old);
+                            $("div.bio").append('<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + ret.message + '</div>');
+                            showNotification('Your ' + id + ' has not been saved.', 'danger');
+                        } else
+                        $("div.bio").addClass("has-success has-feedback");
+                        showNotification('Your ' + id + ' has been saved.', 'success');
+                    }
+                });
+            });
+
+            $('#tag').tagEditor({
+                autocomplete: {
+                    delay: 0, // show suggestions immediately
+                    position: {
+                        collision: 'flip'
+                    }, // automatic menu position up/down
+                    source: {{tags | json_encode | raw}}
+                },
+                initialTags: {{usertags | json_encode | raw}},
+                delimiter: '',
+                placeholder: 'Enter your tags ...',
+                forceLowercase: true,
+                beforeTagSave: function(field, editor, tags, tag, val) {
+                    let valtype = tag
+                    ? 'update'
+                    : 'new';
+                    let ret = true;
+                    $.ajax({
+                        url: "profile/tag/" + valtype,
+                        async: false,
+                        type: 'post',
+                        data: {
+                            'new': val,
+                            'old': tag
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $("div.tag div.alert").remove();
+                            if (data.status === 'error') {
+                                ret = false;
+                                $("div.tag").append('<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + data.message + '</div>');
+                                showNotification('Your tag has not been saved.', 'danger');
+                            }
+                            else{
+                                showNotification('Your tag has been saved.', 'success');
+                            }
+                        }
+                    });
+                    if (!ret)
+                        return false;
+                }
+                ,
+                beforeTagDelete: function(field, editor, tags, val) {
+                    let ret = true;
+                    $.ajax({
+                        url: "profile/tag/delete",
+                        async: false,
+                        type: 'post',
+                        data: {
+                            'tag': val
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            $("div.tag div.alert").remove();
+                            if (data.status === 'error') {
+                                ret = false;
+                                $("div.tag").append('<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + data.message + '</div>');
+                                showNotification('Your tag has not been deleted.', 'danger');
+                            }
+                            else{
+                                showNotification('Your tag has been deleted.', 'success');
+                            }
+                        }
+                    });
+                    if (!ret)
+                        return false;
+                }
+            });
+            function getFullAddress(coords) {
+                $.get('profile/location/locate', {
+                    latitute: coords.latitude,
+                    longitude: coords.longitude
+                }, function(data, status) {
+                    console.log('get full address by call ajax at api google geocoding');
+                    loc = JSON.parse(data);
+                    if (loc.status == 'ERROR'){
+                        showNotification(loc.message, 'danger');
+                    }
+                    else{
+                        $('#postalcode').val(loc.postal_code);
+                        $('input[name="locality"]').val(loc.locality);
+                        $('#country').val(loc.country);
+                    }
+                })
+            }
+
+            function successCallback(position) {
+                getFullAddress(position.coords);
+            };
+
+            function errorCallback(error) {
+                let coords = {
+                    latitute: '',
+                    longitude: ''
+                };
+                console.log('error geolocation by api html');
+                getFullAddress(coords);
+            };
+
+            $("input[name='locate']").on('click', function() {
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+                } else {
+                    console.log('navigator too old for geolocation by api html');
+                    console.log('location by ajax with address ip');
+                    let coords = {
+                        latitute: '',
+                        longitude: ''
+                    };
+                    getFullAddress(coords);
+                }
+            })
+            $('input[name="submitLocation"]').on('click', function() {
+                let postal_code = $('input[name="postalcode"]');
+                let locality = $('input[name="locality"]');
+                let country = $('input[name="country"]');
+                $.post('profile/location/update',
+                    {'postal_code': postal_code.val(), 'locality': locality.val(), 'country': country.val()},
+                    function (data, status) {
+                        let rep = JSON.parse(data);
+                        postal_code.val(rep.postal_code);
+                        locality.val(rep.locality);
+                        country.val(rep.country);
+                        if (rep.status === 'OK'){
+                            showNotification('Your position has been saved', 'success');
+                        }
+                        else if(rep.status == 'ERROR'){
+                            showNotification(rep.message, 'danger');
+                        }
+                    });
+
+            })
+
+            // ***********************************************************//
+            // *********************** UPLOAD FILE ***********************//
+            // ***********************************************************//
+            // We can attach the `fileselect` event to all file inputs on
+            // the page
+
+            var pics = $("input[name='optradio']"),
+            pic_num = img_selected.innerHTML;
+
+            for (var i = 0; i < pics.length; i++)
+            {
+                pics[i].addEventListener('click', function(ev) {
+                    pic_num = this.value;
+                    $('.img-responsive').not('.inactive').addClass("inactive");
+                    $(this).next().removeClass("inactive");
+                }, false);
+            }
+
+            $("#file").on('change', function() {
+                var input = $(this),
+                file_uploaded = input[0].files
+                ? input[0].files[0]
+                : NULL;
+                input.trigger('fileselect', [file_uploaded]);
+            });
+
+            $("#file").on('fileselect', function(event, file_uploaded) {
+             var input = $(this).parents('.input-group').find(':text'),
+             log = file_uploaded
+             ? file_uploaded.name
+             : NULL;
+             if (input.length && log) {
+                 input.val(log);
+                 sendFile(file_uploaded, pic_num);
+             } else {
+                 if (log)
+                     alert(log);
+             }
+         });
+
+            function sendFile(file, pic_num)
+            {
+             var fd = new FormData();
+             fd.append('myFile', file);
+             fd.append('pic_num', pic_num);
+             var saving = $.ajax({
+                url: "profile/img/add",
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(data, status)
+                {
+                    var ret = JSON.parse(data);
+                    var pic_to_change = '#img' + pic_num;
+                    if (ret.picture_url)
+                    {
+                     $(pic_to_change).attr("src", ret.picture_url);
+                     if (ret.isactive == '1')
+                         $(pic_to_change).attr("style", "border: solid 4px #337ab7;");
+                 }
+                 else
+                     showNotification(ret.message, 'danger');
+
+             }
+         })
+         }
+
+         $('#delete_Picture').click(function() {
+            $.post("profile/img/del", {'pic_num': pic_num
+        }, function(data, status){
+            var pic_to_change = '#img' + pic_num;
+            $(pic_to_change).attr("src", "assets/img/upload-logo.png");
+            $(pic_to_change).attr("style", "border: none;");
+            if (data != "")
+            {
+                $("#img" + data).attr("style", "border: solid 4px #337ab7;");
+            }
+            else
+            showNotification("You must select a picture", 'danger');
+        });
+        });
+
+         $('#set_Profile_Picture').click(function() {
+           $.post("profile/img/setProfile", {'pic_num': pic_num
+       }, function(data, status){
+        if (data != "" && data != 'OK' )
+        {
+            for (var i = 1; i < 6; i++)
+            {
+                $('#img' + i).attr("style", "border: none;");
+            }
+            var pic_to_change = '#img' + pic_num;
+            $(pic_to_change).attr("style", "border: solid 4px #337ab7;");
+        }
+        else if (data == "")
+            showNotification("You must select a picture", 'danger');
+    });
+       });
+
+     });
+</script>
+{% endblock %}

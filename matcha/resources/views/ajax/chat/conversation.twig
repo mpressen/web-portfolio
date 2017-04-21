@@ -1,0 +1,36 @@
+{% if conversation is not defined %}
+    <p>Click on the image of the user with who you want to speak.</p>
+{% else %}
+    {% if conversation is not empty %}
+        {% for message in conversation %}
+            <div class="media">
+            {% if auth.user.username == message.username %}
+                {% set pulldir = 'left' %}
+            {% else %}
+                {% set pulldir = 'right' %}
+            {% endif %}
+            {% if pulldir == 'left' %}
+                <div class="media-left">
+                    <div class="text-center">
+                        <img class="media-object img-responsive img-circle" src="{{ base_url() }}{{ message.image.url}}"/>
+                    </div>
+                </div>
+            {% endif %}
+                <div class="media-body">
+                    <p>{{ message.message }}</p>
+                    <small class="text-muted pull-{{ pulldir }}">{{ message.username }} | {{ message.createTime|date("jS F Y \\a\\t G:ia") }}</small>
+                    <hr />
+                </div>
+            {% if pulldir == 'right' %}
+                <div class="media-right">
+                    <div class="text-center">
+                        <img class="media-object img-responsive img-circle" src="{{ base_url() }}{{ message.image.url}}"/>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center">The conversation is empty.</p>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,203 @@
+{% extends 'templates/app.twig' %}
+
+{% set dest = '' %}
+{% set dest_id = '' %}
+{% set break = 0 %}
+
+{% for contact in contacts if break == 0 %}
+    {% if ((chat_id_current is defined) and (contact.chat_id == chat_id_current)) %}
+        {% set dest = contact.user.username|capitalize %}
+        {% set dest_id = contact.user.id %}
+        {% set break = 1 %}
+    {% endif %}
+{% endfor %}
+
+{% block content %}
+<div class="row" style="padding-top:40px;">
+    <h3 class="text-center">CHAT</h3>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                CONTACT USERS
+            </div>
+            <div class="panel-body" style="overflow:auto;max-height:50em;padding:0em;">
+                <ul class="media-list" id="contact" style="margin:0em;">
+                    {% include 'ajax/chat/contact.twig' %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading" role="tchat">
+                CONVERSATION
+                {% if dest is not empty %}
+                    {{ 'with ' ~ dest }}
+                {% endif %}
+            </div>
+            <div class="panel-body" id="panel_conversation" style="overflow:auto;max-height:50em;">
+                <div id="conversation">
+                {% include 'ajax/chat/conversation.twig' %}
+                </div>
+            </div>
+            {% if conversation is defined %}
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="message" name="message" type="text" class="form-control" placeholder="Enter Message" maxlength="3000" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" name="send" id="send">SEND</button>
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scriptAfterExt %}
+<script src="assets/js/bootstrap-notify.min.js"></script>
+<script src="assets/js/show-bs-notification.js"></script>
+<script src="assets/js/notification.js"></script>
+<script>
+    $(document).ready(function() {
+        let url = $.url();
+        let chat_id = url.segment(-1);
+        let conversation = $('#conversation');
+        let contact = $('#contact');
+        let panel_conversation = $('#panel_conversation');
+        panel_conversation.scrollTop(conversation.height());
+        refreshEvent();
+        if (url.attr('path').match(/^\/chat\/[0-9]+$/)){
+            $('button[name="send"]').on('click', function(){
+                sendMessage();
+            });
+            $('input[name="message"]').keypress(function(e){
+                if( e.which == 13 )
+                    sendMessage();
+            });
+            setTimeout(refreshChat(), 1000);
+        }
+        else
+        {
+            chat_id = '';
+            setInterval(function(){ refreshContact(); }, 2000);
+        }
+        function refreshEvent(){
+            $('.unlike').click(function (){
+                $.ajax($(this).attr('href'), {method: "POST"})
+                    .done( function()
+                    {
+                        $(".panel-footer").remove();
+                        $("div[role='tchat']").text('CONVERSATION');
+                        refreshContact();
+                        refreshConversation();
+                    });
+            });
+            $('.block').click(function (){
+                $.ajax($(this).attr('href'), {method: "POST"})
+                    .done( function()
+                    {
+                        $(".panel-footer").remove();
+                        $("div[role='tchat']").text('CONVERSATION');
+                        refreshContact();
+                        refreshConversation();
+                    });
+            });
+        };
+        function sendMessage() {
+            let inputText = $('#message');
+            let message = inputText.val().trim();
+            if (message && /^\d+$/.test(chat_id)) {
+                $.ajax({
+                    url: "/chat/send", // on donne l'URL du fichier de traitement
+                    type: "POST", // la requête est de type POST
+                    data: "message=" + message + "&chat_id=" + chat_id + "&dest_id=" + "{{ dest_id }}", // et on envoie nos données
+                    success: function(result, status, xhr) {
+                        if (xhr.status == 200){
+                            inputText.val('');
+                            conversation.empty();
+                            conversation.append(result);
+                            panel_conversation.scrollTop(conversation.height());
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 401)
+                            document.location.href="{{ path_for('auth.signin') }}";
+                        let rep = JSON.parse(xhr.responseText);
+                        if (rep.message)
+                            showNotification(rep.message, 'danger');
+                        else
+                            showNotification(xhr.status + ' ' + error, 'danger');
+                    }
+                });
+            }
+        };
+            function refreshContact(){
+                let urlchat = (chat_id) ? "{{ path_for('chat.getContacts') }}" + "/" + chat_id : "{{ path_for('chat.getContacts') }}";
+                $.ajax({
+                    //get list contact
+                    url: urlchat, // on donne l'URL du fichier de traitement
+                    type: "GET", // la requête est de type POST
+                    success: function(result, status, xhr) {
+                        if (xhr.status == 200){
+                            contact.empty();
+                            contact.append(result);
+                            refreshEvent();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 401)
+                            document.location.href="{{ path_for('auth.signin') }}";
+                        try{
+                            let rep = JSON.parse(xhr.responseText);
+                            if (rep.message)
+                                showNotification(rep.message, 'danger');
+                        }
+                        catch(e){
+                            showNotification(xhr.status + status  + ' ' + error, 'danger');
+                        }
+                    }
+                });
+            }
+            function refreshConversation(){
+                $.ajax({
+                    //getconversation
+                    url: "{{ path_for('chat.index') }}" + "/" + chat_id, // on donne l'URL du fichier de traitement
+                    type: "GET", // la requête est de type POST
+                    success: function(result, status, xhr) {
+                        if (xhr.status == 200){
+                            let beforeheight = conversation.height();
+                            conversation.empty();
+                            conversation.append(result);
+                            if (result.indexOf("Click on the image of the user with who you want to speak.") != '-1')
+                            {
+                                $(".panel-footer").remove();
+                                $("div[role='tchat']").text('CONVERSATION');
+                            }
+
+                            if (conversation.height() > beforeheight)
+                                panel_conversation.scrollTop(conversation.height());
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        showNotification(xhr.status + ' ' + error, 'danger');
+                        if (xhr.status == 401){
+                            document.location.href="{{ path_for('auth.signin') }}";
+                        }
+                        else{
+                            console.log("internal error");
+                        }
+                    }
+                });
+            }
+            function refreshChat(){
+                setInterval(function(){
+                    refreshConversation();
+                    refreshContact();
+                }, 2000);
+            }
+        });
+    </script>
+
+{% endblock %}

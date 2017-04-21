@@ -1,0 +1,1 @@
+$HOME/http/bin/mysql.server start && $HOME/http/bin/php -S $(hostname):8888 -t public/;

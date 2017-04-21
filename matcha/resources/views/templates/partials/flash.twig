@@ -1,0 +1,79 @@
+{% if flash.getMessage('info') %}
+	{% if flash.getMessage('info') is iterable %}
+		{% for message in flash.getMessage('info') %}
+		<div class="alert alert-info alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ message|raw }}
+		</div>
+		{% endfor %}
+	{% else %}
+		<div class="alert alert-info alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ flash.getMessage('info') | first | raw }}
+		</div>
+	{% endif %}
+{% endif %}
+
+{% if flash.getMessage('error') %}
+	{% if flash.getMessage('error') is iterable %}
+		{% for message in flash.getMessage('error') %}
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ message|raw }}
+		</div>
+		{% endfor %}
+	{% else %}
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ flash.getMessage('error') | first | raw}}
+		</div>
+	{% endif %}
+{% endif %}
+
+{% if flash.getMessage('success') %}
+	{% if flash.getMessage('success') is iterable %}
+		{% for message in flash.getMessage('success') %}
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ message|raw }}
+		</div>
+		{% endfor %}
+	{% else %}
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ flash.getMessage('success') | first | raw }}
+		</div>
+	{% endif %}
+{% endif %}
+
+{% if flash.getMessage('warning') %}
+	{% if flash.getMessage('warning') is iterable %}
+		{% for message in flash.getMessage('warning') %}
+		<div class="alert alert-warning alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ message|raw }}
+		</div>
+		{% endfor %}
+	{% else %}
+		<div class="alert alert-warning alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ flash.getMessage('warning') | first | raw}}
+		</div>
+	{% endif %}
+{% endif %}

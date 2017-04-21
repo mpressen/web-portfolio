@@ -1,0 +1,79 @@
+{% macro link(args) %}
+?{% for k,v in args %}&amp;{{ k }}={% if v is iterable %}{{ v|join(',') }}{% else %}{{ v }}{% endif %}{% endfor %}
+{% endmacro %}
+
+{% macro pagination_list(url, pagination, args) %}
+	{% import _self as forms %}
+	{% set nb_page = 5 %}
+<nav aria-label="results pages">
+	<ul class="pagination pagination-sm">
+	{% if args.page != 1 %}
+		<li>
+			<a href="{{ url }}{{ forms.link(args|merge({ 'page' : 1 })) }}" aria-label="First">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li>
+			<a href="{{ url }}{{ forms.link(args|merge({ 'page' : args.page - 1 })) }}" aria-label="Previous">
+				<span aria-hidden="true">&lsaquo;</span>
+			</a>
+	{% else %}
+		<li class="disabled">
+			<!--<a href="#" aria-label="First">-->
+				<span aria-hidden="true">&laquo;</span>
+			<!--</a>-->
+		</li>
+		<li class="disabled">
+			<!--<a href="#" aria-label="Previous">-->
+				<span aria-hidden="true">&lsaquo;</span>
+			<!--</a>-->
+		</li>
+	{% endif %}
+	{% if pagination.sets > nb_page %}
+		{% if args.page <= nb_page / 2 %}
+			{% set min_page = 1 %}
+			{% set max_page = nb_page %}
+		{% elseif args.page >= (pagination.sets - nb_page / 2) %}
+			{% set min_page = pagination.sets - nb_page + 1 %}
+			{% set max_page = pagination.sets %}
+		{% else %}
+			{% set min_page = max(1, args.page - nb_page // 2) %}
+			{% set max_page = max(nb_page - min_page, args.page + nb_page // 2) %}
+		{% endif %}
+	{% else %}
+		{% set min_page = 1 %}
+		{% set max_page = pagination.sets %}
+	{% endif %}
+	{% for i in range(min_page, max_page) %}
+			<li {% if args.page == i %}class="active"{% endif %}>
+				<a href="{{ url }}{{ forms.link(args|merge({ 'page' : i })) }}">{{ i }}
+				{% if args.page == i %}<span class="sr-only">(current)</span>{% endif %}
+				</a>
+			</li>
+	{% endfor %}
+	{% if args.page != pagination.sets %}
+		<li>
+	    	<a href="{{ url }}{{ forms.link(args|merge({ 'page' : args.page + 1 })) }}" aria-label="Next">
+	        	<span aria-hidden="true">&rsaquo;</span>
+	    	</a>
+	    </li>
+	    <li>
+			<a href="{{ url }}{{ forms.link(args|merge({ 'page' : pagination.sets })) }}" aria-label="Last">
+	        	<span aria-hidden="true">&raquo;</span>
+	    	</a>
+	    </li>
+	{% else %}
+	    <li class="disabled">
+			<!--<a href="#" aria-label="Next">-->
+	        	<span aria-hidden="true">&rsaquo;</span>
+	    	<!--</a>-->
+	    </li>
+	    <li class="disabled">
+			<!--<a href="#" aria-label="Last">-->
+	        	<span aria-hidden="true">&raquo;</span>
+	    	<!--</a>-->
+	    </li>
+	{% endif %}
+	</ul>
+</nav>
+{% endmacro %}

@@ -1,0 +1,9 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+<div class="container">
+    {% if message is defined %}
+        <div class="row"><p class="alert alert-danger">{{ message|raw }}</p></div>
+    {% endif %}
+</div>
+{% endblock %}

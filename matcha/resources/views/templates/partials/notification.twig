@@ -1,0 +1,32 @@
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+     <span class="glyphicon glyphicon-bell"></span>
+    {% if notifications|length > 0 %}
+        <span class="badge" style="background-color:red">{{ notifications|length }}</span>
+    {% else %}
+        <span class="badge">{{ notifications|length }}</span>
+    {% endif %}
+     <span class="caret"></span>
+</a>
+<ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+    <div class="notification-heading"><h4 class="menu-title">Notifications</h4><button role='readAll' class="btn btn-primary pull-right">Mark all as read<span class="glyphicon glyphicon-circle-arrow-right"></span></button></div>
+    <li class="divider"></li>
+    <div class="notifications-wrapper">
+        {% if (notifications is not defined) or (notifications is empty) %}
+            <a class="content" href="#" data-id="-1">
+                <div class="notification-item">
+                    <h4 class="item-title">You don't have notifications.</h4>
+                </div>
+            </a>
+        {% else %}
+            {% for notification in notifications %}
+                <a class="content" data-id="{{ notification.id }}" href="{{ notification.link }}">
+                    <div class="notification-item">
+                        <h4 class="item-title">{{ notification.message|capitalize }} · {{ notification.createTime }}</h4>
+                    </div>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <li class="divider"></li>
+    <div class="notification-footer"><button role='readAll' class="btn btn-primary pull-left">Mark all as read<span class="glyphicon glyphicon-circle-arrow-right"></span></button></div>
+</ul>

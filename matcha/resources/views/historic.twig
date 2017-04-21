@@ -1,0 +1,164 @@
+{% extends 'templates/app.twig' %}
+
+{% block cssAfterExt %}
+    <link rel="stylesheet" href="assets/css/jquery.tag-editor.css">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#visits" aria-controls="visits" role="tab" data-toggle="tab">Visits</a>
+            </li>
+            <li role="presentation">
+                <a href="#notifs" aria-controls="notifs" role="tab" data-toggle="tab">Notifications</a>
+            </li>
+            <li role="presentation">
+                <a href="#blocked_users" aria-controls="blocked_users" role="tab" data-toggle="tab">Blocked users</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="visits">
+                <br/>
+                <br/>
+                {% if visited_profiles %}
+                    <button id="clear_historic" type="button" class="btn btn-success pull-right">Clear history</button>
+                {% endif %}
+                <br/>
+                <br />
+                <div class="panel panel-default ">
+                    {% if visited_profiles %}
+                        <div class="panel-heading 1">You have visited :</div>
+                        <div id="all_visits" class="app-margin-top">
+                            {% for entry in visited_profiles %}
+                                <div class="alert alert-info alert-dismissable"><a href="#" class="close visits" data-dismiss="alert" aria-label="close" id="{{ entry.id }}">×</a><img src="{{ profile_pic_urls[entry.dest_user_id] }}" style="max-width: 30px;max-height: 30px">&nbsp<a href="/user/{{ entry.dest_user_id }}">{{ entry.username }}</a>'s profile <i>on {{ entry.visited_time |date("F jS \\a\\t g:ia") }}</i></div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="panel-heading 1">No historic of visits</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="notifs">
+                <br/>
+                <br/>
+                {% if notifs %}
+                    <button id="clear_notifs" type="button" class="btn btn-success pull-right">Clear history</button>
+                {% endif %}
+                <br/>
+                <br />
+                <div class="panel panel-default">
+                    {% if notifs %}
+                        <div class="panel-heading 2">Notifications :</div>
+                        <div id="all_notifs" class="app-margin-top">
+                            {% for entry in notifs %}
+                                <div class="alert alert-info alert-dismissable"><a href="#" class="close notifs" data-dismiss="alert" aria-label="close" id="{{ entry.id }}">×</a><img src="{{ profile_pic_urls2[entry.message | split(' ', 2)[0]] }}" style="max-width: 30px;max-height: 30px">&nbsp<a href="{{ entry.link }}">
+                                    {{entry.message | split(' ', 2)[0] }}</a> {{ entry.message | split(' ', 2)[1] | slice(0, -1) }}
+                                    <i>on {{ entry.create_time |date("F jS \\a\\t g:ia") }}</i></div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="panel-heading 2">No historic of notification</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="blocked_users">
+                    <br/>
+                    <br/>
+                    {% if blocked_users %}
+                        <button id="clear_blocked_users" type="button" class="btn btn-success pull-right">Unblock all users</button>
+                    {% endif %}
+                    <br/>
+                    <br />
+                    <div class="panel panel-default">
+                        {% if blocked_users %}
+                            <div class="panel-heading 3"> You have blocked :</div>
+                            <div id="all_blocked_users" class="app-margin-top">
+                                {% for entry in blocked_users %}
+                                    <div class="alert alert-info alert-dismissable"><a href="#" class="close blocked_users" data-dismiss="alert" aria-label="close" id="{{ entry.id }}">x</a><img src="{{ entry.profile_pic}}" style="max-width: 30px;max-height: 30px">&nbsp<a href="{{ entry.link }}">
+                                        {{ entry.username }}</a></div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="panel-heading 3">No blocked users</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block scriptAfterExt %}
+            <script src="assets/js/jquery-ui.min.js"></script>
+            <script src="assets/js/jquery.caret.min.js"></script>
+            <script src="assets/js/bootstrap-notify.min.js"></script>
+            <script src="assets/js/jquery.tag-editor.min.js"></script>
+            <script src="assets/js/show-bs-notification.js"></script>
+            <script src="assets/js/notification.js"></script>
+            <script>
+             $(document).ready(function() {
+
+                $('#clear_notifs').click(function() {
+                    $.post("history/clear", {type: 'notifs'}, function(data, status){
+                        $("#all_notifs").empty();
+                        $("#all_notifs").removeClass('app-margin-top');
+                        $(".2").text('No historic of notifications');
+                        $("#clear_notifs").remove();
+                    });
+                });
+
+                $('.notifs').click(function() {
+                    $.post("history/delete_element", {id : this.id, type: $(this).attr('class')}, function(data, status){
+                        if ($("#all_notifs").children().length == 0)
+                        {
+                            $("#all_notifs").removeClass('app-margin-top');
+                            $(".2").text('No historic of notifications');
+                            $("#clear_notifs").remove();
+                        }
+                    });
+                });
+
+                $('.visits').click(function() {
+                    $.post("history/delete_element", {id : this.id, type: $(this).attr('class')}, function(data, status){
+                        if ($("#all_visits").children().length == 0)
+                        {
+                            $("#all_visits").removeClass('app-margin-top');
+                            $(".1").text('No historic of visits');
+                            $("#clear_historic").remove();
+                        }
+                    });
+                });
+
+                $('#clear_historic').click(function() {
+                    $.post("history/clear", {type: 'visits'}, function(data, status){
+                        $("#all_visits").empty();
+                        $("#all_visits").removeClass('app-margin-top');
+                        $(".1").text('No historic of visits');
+                        $("#clear_historic").remove();
+                    });
+                });
+
+                $('.blocked_users').click(function() {
+                    $.post("history/delete_element", {id : this.id, type: $(this).attr('class')}, function(data, status){
+                        if ($("#all_blocked_users").children().length == 0)
+                        {
+                            $("#all_blocked_users").removeClass('app-margin-top');
+                            $(".3").text('No blocked users');
+                            $("#clear_historic").remove();
+                        }
+                    });
+                });
+
+                $('#clear_blocked_users').click(function() {
+                    $.post("history/clear", {type: 'blocked_users'}, function(data, status){
+                        $("#all_blocked_users").empty();
+                        $("#all_blocked_users").removeClass('app-margin-top');
+                        $(".3").text('No blocked users');
+                        $("#clear_blocked_users").remove();
+                    });
+                });
+            });
+         </script>
+     {% endblock %}

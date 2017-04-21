@@ -1,0 +1,23 @@
+{% extends 'templates/app.twig' %}
+
+{% block cssAfterExt %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    	<div class="col-md-6 col-md-offset-3">
+    		<div class="panel panel-default">
+    			<div class="panel-heading">Ask Reset Password</div>
+    			<div class="panel-body">
+    				<form action="{{ path_for('auth.password.askreset') }}" method="post">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="matcha@custom.fr">
+                        </div>
+						<button type="submit" class="btn btn-default">Send</button>
+    				</form>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+{% endblock %}

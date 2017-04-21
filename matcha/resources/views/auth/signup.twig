@@ -1,0 +1,75 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="panel panel-default">
+				<div class="panel-heading">Sign Up</div>
+					<form action="{{ path_for('auth.signup') }}" method="post">
+						<div class="panel-body">
+							<div class="form-group{{ errors.email ? ' has-error' : '' }}">
+								<label for="email">Email</label>
+								<input type="email" name="email" id="email" placeholder="you@domain.com" class="form-control" value="{{ old.email }}">
+								{% if errors.email %}
+									<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>{{ errors.email }}</div>
+								{% endif %}
+							</div>
+							<div class="form-group{{ errors.username ? ' has-error' : '' }}">
+								<label for="username">Username</label>
+								<input type="username" name="username" id="username" placeholder="flamby75" class="form-control" value="{{ old.username }}">
+								{% if errors.username %}
+									<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>{{ errors.username }}</div>
+								{% endif %}
+							</div>
+		                <div class="form-group{{ errors.firstname ? ' has-error' : '' }}">
+							<label for="firstname">First name</label>
+							<input type="firstname" name="firstname" id="firstname" placeholder="François" class="form-control" value="{{ old.firstname }}">
+		                    {% if errors.firstname %}
+		                    <div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>{{ errors.firstname }}</div>
+		                    {% endif %}
+						</div>
+		                <div class="form-group{{ errors.lastname ? ' has-error' : '' }}">
+							<label for="lastname">Last name</label>
+							<input type="lastname" name="lastname" id="lastname" placeholder="Hollande" class="form-control" value="{{ old.lastname }}">
+		                    {% if errors.lastname %}
+		                    	<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>{{ errors.lastname }}</div>
+		                    {% endif %}
+						</div>
+						<div class="form-group{{ errors.password ? ' has-error' : '' }}">
+							<label for="password">Password</label>
+							<input type="password" name="password" id="password" class="form-control">
+		                    {% if errors.password %}
+		                    	<div class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>{{ errors.password }}</div>
+		                    {% endif %}
+						</div>
+		                <input type="hidden" name="longitude" id="longitude" value="">
+		                <input type="hidden" name="latitude" id="latitude" value="">
+						<button type="submit" class="btn btn-default">Sign Up</button>
+		                {{ csrf.field | raw }}
+					</div>
+					<div class="panel-footer">
+						<div class="col-sm-6 text-center">
+							<button type="submit" formaction="{{ path_for('auth.presign42') }}">Sign with 42</button>
+						</div>
+						<div class="col-sm-6 text-center">
+							<a href="{{ fbloginurl }}" class="btn btn-block btn-sm btn-social btn-facebook">
+								<span class="fa fa-facebook"></span>
+								Sign with Facebook
+							</a>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block cssAfterExt %}
+<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+<link rel="stylesheet" href="assets/css/bootstrap-social.css">
+{% endblock %}
+
+{% block scriptAfterExt %}
+<script type="text/javascript" src="assets/js/geolocation.js"></script>
+{% endblock %}

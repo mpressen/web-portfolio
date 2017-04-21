@@ -1,0 +1,171 @@
+ {% extends 'templates/app.twig' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-xs-12 text-center">
+			<div id="messages" class="{% if blacklist is not empty %} hidden {% endif %}">
+				<div id="msg2" class="alert alert-success{% if loggued_user_is_liked is empty or (loggued_user_is_liked is not empty and likes is empty) %} hidden {% endif %}">{{ user.username }} and you are matched, you can now chat together</div>
+				<div id="msg1" class="alert alert-info{% if loggued_user_is_liked is empty or (loggued_user_is_liked is not empty and likes is not empty) %} hidden {% endif %}">{{ user.username }} has liked you</div>
+			</div>
+			<div id="msg3" class="alert alert-danger {% if blacklist is empty %} hidden {% endif %}">you have blocked {{ user.username }}</div>
+			{% if userimage is empty %}
+				<img src="/assets/img/user.png" class="img-responsive center-block" alt="">
+			{% else %} 
+				<div id="carousel" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators">
+						{% for image in userimage %}
+							<li data-target="#carousel" data-slide-to="{{ loop.index0 }}" {% if (loop.index0 == 0) %} class="active"{% endif %}></li>
+						{% endfor %}
+					</ol>
+					<div class="carousel-inner" role="listbox">
+						{% for image in userimage %}
+							<div class="item text-center{% if (loop.index0 == 0) %} active{% endif %}">
+								<img src="{{ image }}" class="img-responsive" alt="">
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+			<div class="caption">
+				<h4 class="text-center">{{ user.username }}</h4>
+				<h5 class="text-center">{{ user.firstname|capitalize }} {{ user.lastname|capitalize }}</h5>
+				<h6 class="text-center">Popularity : {{ user.popularity }}</h6>
+				{% if user.id != user_loggued.id %}
+					<div class="col-xs-6{% if likes is empty %} hidden{% endif %}">
+						<button id="unlike" type="button" class="btn btn-warning pull-right"{% if blacklist is not empty %} disabled="disabled"{% endif %}>Dislike</button>
+					</div>
+					<div class="col-xs-6{% if likes is not empty %} hidden{% endif %}">
+						<button id="like" type="button" class="btn btn-success pull-right"{% if blacklist is not empty %} disabled="disabled"{% endif %}>Like</button>
+					</div>
+					<div class="col-xs-6">
+						<button id="block" type="button" class="btn btn-danger pull-left {% if blacklist is not empty %} hidden {% endif %}">Block</button>
+					</div>
+					<div class="col-xs-6">
+						<button id="unblock" type="button" class="btn btn-danger pull-left {% if blacklist is empty %} hidden {% endif %}">Unblock</button>
+					</div>
+				{% endif %}
+				<div class="clearfix"></div>
+				<p class="text-center">{% if user.age %}{{ user.age }} years old{% endif %} {{ user.attraction }} {% if user.gender %}{{ user.gender }}{% endif %}<br>from {{ user.postalcode }} {{ user.locality|capitalize }}, {{ user.country|capitalize }}</p>
+				<h7 class="text-center">{% if user.isconnected %}<span class="label label-success">Actually connected</span>{% else %}<i>Last seen :</i> {{ user.lastactivity|date('d/m/Y') }}{% endif %}</h7>
+			</div>
+			{% if usertags is not empty %}
+			<div class="tag-editor tag-list text-center">
+				{% for tag in usertags %}
+					<div class="tag-editor-tag{% if tag in visitor_tags %} green-tag{% endif %}">{{ tag }}</div>
+					{% if not loop.last %}
+						<div class="tag-editor-spacer">&nbsp;</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+			{% endif %}
+			<blockquote>
+				{% if user.bio is not empty %}
+					{{ user.bio }}
+				{% else %}
+					<small>User has no description yet.</small>
+				{% endif %}
+			</blockquote>
+			{% if user.id != user_loggued.id %}
+				<div class="col-xs-12 {% if report is not empty %} hidden{% endif %}">
+					<button type="button" class="btn btn-link" id="report">Report</button>
+				</div>
+				<div class="col-xs-12 {% if report is empty %} hidden{% endif %}">
+					<p class="text-muted" id="reported">You have reported this user.</p>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block cssAfterExt %}
+	<link rel="stylesheet" href="assets/css/jquery.tag-editor.css">
+	<style>
+		.tag-editor-tag, .tag-editor-spacer { float: none !important; display: inline-block !important; }
+		.tag-list {	height:auto !important; }
+		.tag-editor .green-tag { color: #45872c !important; background: #e1f3da !important; }
+	</style>
+{% endblock %}
+
+{% block scriptAfterExt %}
+	<script src="assets/js/notification.js"></script>
+	<script src="assets/js/jquery.touchSwipe.min.js"></script>
+	<script src="assets/js/bootstrap-notify.min.js"></script>
+	<script src="assets/js/show-bs-notification.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.carousel-inner').swipe({
+				swipeLeft:function(event, direction, distance, duration, fingerCount) {
+					$(this).parent().carousel('next');
+				},
+				swipeRight: function()
+				{
+					$(this).parent().carousel('prev');
+				},
+				threshold: 0
+			});
+		});
+		$('#like').click(function (){
+			{% if visitor_image is empty %}
+			showNotification('You must have a profile picture to like someone else\'s profile.</div>', 'danger');
+			{% else %}
+			$.ajax('{{ path_for('user.like', {'id' : user.id}) }}', {method: "POST"})
+			.done( function( msg )	{
+				$('#like').parent().addClass('hidden');
+				$('#unlike').parent().removeClass('hidden');
+				{% if loggued_user_is_liked %}
+				$('#msg1').addClass('hidden');
+				$('#msg2').removeClass('hidden');
+				{% endif %}
+			});
+			{% endif %}
+		});
+		$('#unlike').click(function (){
+			$.ajax('{{ path_for('user.unlike', {'id' : user.id}) }}', {method: "POST"})
+			.done( function()
+			{
+				$('#unlike').parent().addClass('hidden');
+				$('#like').parent().removeClass('hidden');
+				{% if loggued_user_is_liked %}
+				$('#msg2').addClass('hidden');
+				$('#msg1').removeClass('hidden');
+				{% endif %}
+			});
+		});
+		$('#block').click(function (){
+			$.ajax('{{ path_for('user.block', {'id' : user.id}) }}', {method: "POST"})
+			.done( function()
+			{
+				$('#unlike').attr('disabled', 'disabled');
+				$('#like').attr('disabled', 'disabled');
+				$('#msg3').removeClass('hidden');
+				$('#messages').addClass('hidden');
+				$('#block').addClass('hidden');
+				$('#unblock').removeClass('hidden');
+				$('#like').parent().removeClass('hidden');
+				$('#unlike').parent().addClass('hidden');
+			});
+		});
+		$('#unblock').click(function (){
+			$.ajax('{{ path_for('user.unblock', {'id' : user.id}) }}', {method: "POST"})
+			.done( function()
+			{
+				$('#unlike').prop('disabled', false);
+				$('#like').prop('disabled', false);
+				$('#msg3').addClass('hidden');
+				$('#messages').removeClass('hidden');
+				$('#block').removeClass('hidden');
+				$('#unblock').addClass('hidden');
+				$('#like').parent().removeClass('hidden');
+				$('#unlike').parent().addClass('hidden');
+			});
+		});
+		$('#report').click(function (){
+			$.ajax('{{ path_for('user.report', {'id' : user.id}) }}', {method: "POST"})
+			.done( function()
+			{
+				$('#report').parent().addClass('hidden');
+				$('#reported').parent().removeClass('hidden');
+			});
+		});
+	</script>
+{% endblock %}

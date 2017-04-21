@@ -1,0 +1,183 @@
+{% extends 'templates/app.twig' %}
+
+{% import 'userlist_macro.twig' as forms %}
+
+{% block content %}
+	{% if profile_completed['status'] == '0' %}
+	<div class="alert alert-danger alert-dismissable"><a href="#" class="close visits" data-dismiss="alert" aria-label="close" id="{{ entry.id }}">×</a>&nbspIf you don't complete your profile you won't be visible to other users !</div>
+{% endif %}
+	<div class="row">
+		<div class="col-xs-12">
+			<form action="{{ path_for('home') }}" method="get" id="userlist">
+				<div class="panel panel-default">
+					<div class="panel-heading">Profiles you may be interested in</div>
+					<div class="panel-body">
+						<div class="row form-inline">
+							<div class="form-group col-xs-12  text-center">
+								<div class="col-lg-4">
+									<label for="location">
+										Location
+									</label>
+									<input type="text" name="location" class="form-control" id="inputlocation" value="{{ args.location }}">
+									<select name="range" id="range" class="form-control">
+										<option value="1"{% if args.range == 1 %} selected{% endif %}>10 Km</option>
+										<option value="2"{% if args.range == 2 %} selected{% endif %}>30 Km</option>
+										<option value="3"{% if args.range == 3 %} selected{% endif %}>50 Km</option>
+										<option value="4"{% if args.range == 4 %} selected{% endif %}>100 Km</option>
+									</select>
+									<input type="hidden" name="latitude" id="latitude" value="{{ args.latitude }}">
+									<input type="hidden" name="longitude" id="longitude" value="{{ args.longitude }}">
+								</div>
+								<div class="col-sm-6 col-lg-4">
+									<label for="age">
+										Age&nbsp;&nbsp;&nbsp;
+									</label>
+									<input type="text" name="age" class="form-control" id="age" data-slider-min="18" data-slider-max="150" data-slider-step="1" data-slider-value="[{{ args.min_age }},{{ args.max_age }}]">
+								</div>
+								<div class="col-sm-6 col-lg-4">
+									<label for="popularity">
+										Popularity&nbsp;&nbsp;&nbsp;
+									</label>
+									<input type="text" name="popularity" class="form-control" id="popularity" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="[{{ args.min_pop }},{{ args.max_pop }}]">
+								</div>
+							</div>
+						</div>
+						<div class="form-horizontal text-center">
+							<div id="tagscontainer">
+								<input class="form-control" name="tags" type="text" id="tags">
+							</div>
+						</div>
+						<div class="row form-inline">
+							<div class="form-group col-xs-12 text-center">
+								<div class="col-sm-6 col-md-5">
+									<label for="order">
+										Order by
+									</label>
+									<select name="order" id="order" class="form-control">
+										<option value="1"{% if args.order == 1 %} selected{% endif %}>Age - Youngest first</option>
+										<option value="2"{% if args.order == 2 %} selected{% endif %}>Age - Oldest first</option>
+										<option value="3"{% if args.order == 3 %} selected{% endif %}>Popularity - Popular first</option>
+										<option value="4"{% if args.order == 4 %} selected{% endif %}>Popularity - Unpopular first</option>
+										<option value="5"{% if args.order == 5 %} selected{% endif %}>Location - Nearest first</option>
+										<option value="6"{% if args.order == 6 %} selected{% endif %}>Location - Farthest first</option>
+										<option value="7"{% if args.order == 7 %} selected{% endif %}>Tags - More match</option>
+										<option value="8"{% if args.order == 8 %} selected{% endif %}>Tags - Less match</option>
+									</select>
+								</div>
+								<div class="col-sm-6 col-md-3">
+									<label for="nb">
+										User per page
+									</label>
+									<select name="nb" id="nb" class="form-control">
+										<option value="1"{% if args.nb == 1 %} selected{% endif %}>12</option>
+										<option value="2"{% if args.nb == 2 %} selected{% endif %}>24</option>
+										<option value="3"{% if args.nb == 3 %} selected{% endif %}>48</option>
+									</select>
+								</div>
+								<div class="col-xs-6 col-md-3 heightfix">
+									<p class="form-control-static center-block">{{ pagination.total }} matching users</p>
+								</div>
+								<div class="col-xs-6 col-md-1 heightfix">
+									<button type="submit" class="btn btn-primary center-block">Send</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer text-center" id="respagi">
+						{% if pagination.total > 0 %}
+							{{ forms.pagination_list(path_for('home'), pagination, args) }}
+						{% endif %}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row" id="ulist">
+		{% for user in user_list %}
+			{% if user.tags is not empty %}
+				{% set utags = user.tags|split(',') %}
+				{% endif %}
+				<div class="col-xs-12 col-sm-4 col-md-3">
+					<div class="thumbnail text-center">
+						<a href="/user/{{ user.id }}">
+							{% if user.image is null %}
+								<img src="assets/img/user.png" class="img-responsive" alt="">
+							{% else %}
+								<img src="{{ user.image }}" class="img-responsive" alt="">
+							{% endif %}
+						</a>
+						{% if user.isconnected %}<span class="label label-success connected">Connected</span>{% endif %}
+							<span class="badge popularity" data-like="{{ user.like }}" data-visit="{{ user.visit }}">{{ user.popularity }}</span>
+							<div class="caption">
+								<h4 class="text-center">{{ user.username }}
+									{% if user.gender == 'male' %}
+										<i class="fa fa-mars"></i>
+									{% elseif user.gender == 'female' %}
+										<i class="fa fa-venus"></i>
+									{% endif %}</h4>
+									<div class="ugeoinfo">
+										<p class="text-center">{{ user.postalcode }} {{ user.locality|capitalize }}
+											{% if user.distance > 1 %}  <wbr>~{{ user.distance|round(0, 'floor') }}Km{% endif %}</p>
+											</div>
+											{% if utags is defined %}
+												<div class="tag-editor tag-list" data-nbtags="{{ utags|length }}">
+													{% for tag in utags %}
+														<div class="tag-editor-tag">{{ tag }}</div>
+														{% if not loop.last %}
+															<div class="tag-editor-spacer">&nbsp;</div>
+														{% endif %}
+													{% endfor %}
+												</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endblock %}
+
+					{% block cssAfterExt %}
+						<link rel="stylesheet" href="assets/css/bootstrap-slider.min.css">
+						<link rel="stylesheet" href="assets/css/jquery.tag-editor.css">
+						<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+					{% endblock %}
+
+					{% block scriptAfterExt %}
+						<script src="assets/js/jquery-ui.min.js"></script>
+						<script src="assets/js/jquery.caret.min.js"></script>
+						<script src="assets/js/jquery.tag-editor.min.js"></script>
+						<script src="assets/js/bootstrap-slider.min.js"></script>
+						<script src="assets/js/notification.js"></script>
+						<script src="assets/js/userlist.js"></script>
+						<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnTvf9WuRCc5Y2j3aQ3O_cct4NWyVTdX4&amp;libraries=places"></script>
+						<script>
+							$(document).ready(function() {
+								$('#tags').tagEditor({
+									autocomplete: {
+										delay: 0,
+										position: {
+											collision: 'flip'
+										}
+										{% if tags is not null %},
+										source: {{tags | json_encode | raw}}
+										{% endif %}
+									},
+									{% if args.tags is not null %}
+									initialTags: {{args.tags | json_encode | raw}},
+									{% endif %}
+									maxTags: 20,
+									delimiter: ', ',
+									placeholder: 'Enter your tags ...',
+									forceLowercase: true,
+									beforeTagSave: function(fields, editor, tags, tag, val) {
+										if (jQuery.inArray(val, {{tags | json_encode | raw}}) == -1)
+											return false;
+									},
+									onChange: function(fields, editor, tags)
+									{
+										$('#userlist').submit();
+									}
+								});
+							});
+						</script>
+					{% endblock %}

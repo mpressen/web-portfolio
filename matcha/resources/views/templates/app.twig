@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% block HTMLHead %}
+
+	{% endblock %}
+	<title>Matcha</title>
+	<base href="{{ base_url() }}">
+	{% block cssBeforeExt %}
+
+	{% endblock %}
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/app.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	{% block cssAfterExt %}
+
+	{% endblock %}
+</head>
+<body>
+	{% include 'templates/partials/navigation.twig' %}
+	<div class="container">
+		{% include 'templates/partials/flash.twig' %}
+		{% block content %}
+
+		{% endblock %}
+	</div>
+	{% include 'templates/partials/footer.twig'%}
+	{% block scriptBeforeExt %}
+
+	{% endblock %}
+	<script src="assets/js/jquery-3.1.1.min.js"></script>
+	<script src="assets/js/bootstrap-3.3.7.min.js"></script>
+	<script src="assets/js/purl.js"></script>
+	{% block scriptAfterExt %}
+
+	{% endblock %}
+</body>
+</html>

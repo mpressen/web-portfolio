@@ -1,0 +1,383 @@
+body {
+    padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+.content {
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.title {
+    padding-top: 30%;
+    text-align: center;
+    font-size: 96px;
+}
+
+.footer {
+	position: fixed;
+    bottom: 0;
+	padding: 20px;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 50px;
+    background-color: #101010;
+    z-index: 2000;
+}
+
+.notifications {
+    width: 420px;
+}
+
+.notifications-wrapper {
+    overflow: auto;
+    max-height: 250px;
+}
+
+/*.navbar-brand{
+    font-family: 'Comic Sans MS';
+}
+
+.navbar{
+    font-family: 'Comic Sans MS';
+}
+
+.navbar-inverse .navbar-brand {
+    color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+
+@media (max-width: 767px){
+    .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
+        color: #ffffff;
+    }
+}
+
+.panel-default{
+    border-color: #383838;
+}
+
+.panel-default>.panel-heading{
+    background-color: #383838;
+    border-color: #383838;
+    color:white;
+}
+
+.panel-footer {
+    background-color: #383838;
+    border-color: #383838;
+    color:white;
+}*/
+
+.menu-title {
+    color: #337ab7;
+    font-size: 1.5rem;
+    display: inline-block;
+}
+
+.glyphicon-circle-arrow-right {
+    margin-left: 10px;
+}
+
+.notification-heading, .notification-footer {
+    padding: 2px 10px;
+}
+
+.dropdown-menu.divider {
+    margin: 5px 0;
+}
+
+.item-title {
+    /*font-family: 'Trebuchet MS';*/
+    font-size: 1.3rem;
+    color: #000;
+}
+
+.notifications a.content {
+    text-decoration: none;
+    background: #ccc;
+}
+
+.notification-item {
+    padding: 10px;
+    margin: 5px;
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.tooltip
+{
+    z-index: 999;
+}
+
+/*** Chat ***/
+#panel_conversation p {
+    overflow: hidden;
+    hyphens: auto;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
+#panel_conversation .media-body>p
+{
+    text-align: right;
+    min-height: 40px;
+}
+
+#panel_conversation .media-left + .media-body>p
+{
+    text-align: left;
+}
+
+#panel_conversation .media-left div img, #panel_conversation .media-right div img
+{
+    display: initial !important;
+}
+
+@media only screen and (max-width: 767px)
+{
+    #panel_conversation .media-left div, #panel_conversation .media-right div
+    {
+        line-height:60px;
+        height:60px;
+        width:60px;
+    }
+    #panel_conversation .img-circle
+    {
+        max-height:60px;
+        max-width:60px;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 1199px)
+{
+    #panel_conversation .media-body>p
+    {
+        margin-top: 10px;
+    }
+    #panel_conversation .media-left div, #panel_conversation .media-right div
+    {
+        line-height:80px;
+        height:80px;
+        width:80px;
+    }
+    #panel_conversation .img-circle
+    {
+        max-height:80px;
+        max-width:80px;
+    }
+}
+@media only screen and (min-width: 1200px)
+{
+    #panel_conversation .media-body>p
+    {
+        margin-top: 20px;
+    }
+    #panel_conversation .media-left div, #panel_conversation .media-right div
+    {
+        line-height:100px;
+        height:100px;
+        width:100px;
+    }
+    #panel_conversation .img-circle
+    {
+        max-height:100px;
+        max-width:100px;
+    }
+}
+/**** User list ***/
+
+#userlist label {
+    height: 35px;
+    line-height: 35px;
+    min-width: 55px;
+}
+
+#userlist label input[type=radio] {
+    margin-top: 10px;
+}
+
+#inputlocation {
+    display: inline-block;
+    max-width: 180px;
+    height: 35px;
+    margin: 0;
+}
+
+#range {
+    display: inline-block;
+    max-width: 90px;
+    height: 35px;
+    margin: 0;
+}
+
+#tagscontainer ul {
+    min-height: 34px;
+    padding: 0;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    margin: 5px 0;
+}
+
+#tagscontainer ul li {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+ul.ui-autocomplete
+{
+    padding: 3px;
+}
+
+.ui-menu-item-wrapper:hover
+{
+    color: #46799b;
+}
+
+#respagi {
+    min-height: 41px;
+    padding: 5px 15px;
+}
+
+#respagi nav {
+    height: 30px;
+}
+
+#respagi ul {
+    margin: 0 auto;
+    padding: 0;
+}
+
+span.connected {
+    position: relative;
+    float: left;
+}
+
+span.popularity {
+    position: relative;
+    float: right;
+}
+
+div.tag-list {
+    height: 22px;
+    overflow-x: visible;
+}
+
+span.more-tags {
+    position: relative;
+    float: right;
+    clear: both;
+    top: -27px;
+    left: 12px;
+}
+
+.ugeoinfo {
+    height: 40px;
+    vertical-align: middle;
+}
+
+.app-margin-bottom {
+    margin-bottom: 10px;
+}
+
+.app-margin-top {
+    margin-top: 10px;
+}
+
+.app-vertical-center {
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+a.btn-social.btn-sm span {
+    height: 20px;
+}
+
+img.inactive {
+    opacity: 0.4;
+}
+
+#ulist .thumbnail a {
+    display: block;
+    width: 100%;
+}
+
+#ulist .thumbnail a>img, #carousel img {
+    display: initial !important;
+    vertical-align: middle;
+}
+
+#carousel .item {
+    height: 50vh;
+    line-height: 50vh;
+}
+
+#carousel .item img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.carousel-indicators li {
+    border: 1px solid #000;
+    background-color: #fff;
+}
+
+.carousel-indicators .active {
+    background-color: #337ab7;
+}
+
+@media only screen and (max-width: 767px) {
+    .heightfix {
+        min-height: 55px;
+    }
+    .heightfix>* {
+        position: absolute;
+        top: 50%;
+        left: 25%;
+        transform: translateY(-50%);
+    }
+    #ulist .thumbnail a>img {
+        max-height: 300px;
+    }
+    #ulist .thumbnail a {
+        height: 300px;
+        line-height: 300px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    #ulist .thumbnail a>img {
+        max-height: 210px;
+    }
+    #ulist .thumbnail a {
+        height: 210px;
+        line-height: 210px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    #ulist .thumbnail a>img {
+        max-height: 202.5px;
+    }
+    #ulist .thumbnail a {
+        height: 202.5px;
+        line-height: 202.5px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    #ulist .thumbnail a>img {
+        max-height: 252.5px;
+    }
+    #ulist .thumbnail a {
+        height: 252.5px;
+        line-height: 252.5px;
+    }
+}

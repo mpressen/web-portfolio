@@ -1,0 +1,45 @@
+{% if (contacts is not null and contacts is not empty) %}
+    {% set dest = ' ' %}
+    {% for contact in contacts %}
+        {% if ((chat_id_current is defined) and (contact.chat_id == chat_id_current)) %}
+            {% set dest = contact.user.username|capitalize %}
+            {% set dest_id = contact.user.id %}
+            {% set bg = ' bg-info' %}
+        {% else %}
+            {% set bg = '' %}
+        {% endif %}
+        <li class="media{{ bg }}" style="padding:1em;margin-top:0em;">
+            <div class="media-body">
+                <div class="media">
+                    <a class="pull-left" href="{{ path_for('chat.index') }}/{{ contact.chat_id }}">
+                        <img class="media-object img-circle" style="max-height:40px;max-width:40px;" src="{{ contact.image.url }}"/>
+                    </a>
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" href="{{ path_for('user.unlike', {'id' : contact.user.id}) }}" class="btn btn-default btn-sm btn-warning unlike">dislike</button>
+                        <button type="button" href="{{ path_for('user.block', {'id' : contact.user.id}) }}" class="btn btn-default btn-sm btn-danger block">block</button>
+                    </div>
+                    <div class="media-body">
+                        <a href="{{ path_for('user' ,{'id' : contact.user.id}) }}"><h5>{{ contact.user.username|capitalize }}</h5></a>
+                        <small class="text-muted">
+                            {% if not contact.user.isconnected %}
+                                <span class="label label-danger">Offline</span> {{ contact.user.lastactivity|date('Y/m/d H:i') }}
+                            {% else %}
+                                <span class="label label-success">Online</span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+{% else %}
+    <li class="media bg-info" style="padding:1em;margin-top:0em;">
+        <div class="media-body">
+            <div class="media">
+                <div class="media-body">
+                    <p class="text-center bg-info"><strong>You don't have any contacts.</strong></p>
+                </div>
+            </div>
+        </div>
+    </li>
+{% endif %}
