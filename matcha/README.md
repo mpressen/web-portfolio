@@ -27,10 +27,8 @@ Stack :
   - twitter bootstrap
   - jquery, ...
 
-
-
-Ce projet suit le motif d'architecture MVC et la POO. Protocole OAuth ac les api fcbk et 42 pour l'inscription
+Ce projet suit le motif d'architecture MVC et la POO. Protocole OAuth avec les api fcbk et 42 pour l'inscription
 
 __Note: 125 /100 (note max)__
 
-*Sujet disponible --> cf camagru.fr.pdf*
+*Sujet disponible --> cf matcha.fr.pdf*
