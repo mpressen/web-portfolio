@@ -1,3 +1,5 @@
+<h1>Camagru</h1>
+
 Camagru est le premier projet web de 42.
 
 Il intervient juste après la réussite de la piscine web, qui nous apprend les rudiments du CSS, HTML, PHP, SQL et JS en 15 jours.
@@ -8,6 +10,6 @@ Ce projet consiste à coder un site de partage de photos (ou selfies via la webc
 
 Ce projet essaye de suivre le motif d'architecture MVC.
 
-Note: 125 /100 (note max)
+__Note: 125 /100 (note max)__
 
-Sujet disponible --> cf camagru.fr.pdf  
+*Sujet disponible --> cf camagru.fr.pdf*
