@@ -40,7 +40,7 @@ Finally, browse to the Document root indicated in the console.
 
 - Authentication and connexion system:
     - local
-    - OAuth protocol for facebook and 42 
+    - OAuth protocol for facebook and 42 sign up
 - Proper data validation for security concern
 - Edit profile
 - Geolocalisation
