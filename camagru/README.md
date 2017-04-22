@@ -19,10 +19,11 @@ __Grade: 125 /100 (max)__
 ## Getting Started
 
 You need LAMP/MAMP/WAMP to start a web server.
-Git clone parent repo 'portfolio' in the related *AMP folder and browse to 'http://localhost:8080/{your portfolio's folder name}/camagru/'.
+
+Git clone parent repo 'portfolio' in the related *AMP folder and browse to 'localhost:8080/{your portfolio's folder name}/camagru/'.
 
 
 ## Notes
 
-This project is all about coding a first web app' with basic local authentication and connexion system, proper data validation for security concern, webcam streaming and picture capturing with filters/layers added, likes and comments systems, emailing and file uploading, wrapped in a responsive design. MVC design pattern wannabe.
+This project is all about coding a first web app' with basic local authentication and connexion system, proper data validation for security concern, webcam streaming and picture capturing with filters/layers added, likes and comments systems, emailing and file uploading, wrapped in a responsive design. MVC design pattern wannabe. No POO yet.
 
