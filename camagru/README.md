@@ -1,15 +1,25 @@
-<h1>Camagru</h1>
+# Camagru
 
-Camagru est le premier projet web de 42.
+Web app' for sharing funny selfies among friends
 
-Il intervient juste après la réussite de la piscine web, qui nous apprend les rudiments du CSS, HTML, PHP, SQL et JS en 15 jours. Je suis donc à un niveau débutant lors de sa réalisation.
+## Subject
 
-Ce projet consiste à coder un site de partage de photos (ou selfies via la webcam) avec des filtres, et donc des systemes de likes, de commentaires, d'authentification, d'email, de validation et d'upload de fichiers.
+Camagru is the first 42's web project.
 
-<h3>Le sujet précise que toutes librairies externes et autres frameworks sont interdits.</h3>
+It's available after validating the web "piscine", during which we learn the very basics of CSS | HTML | SQL | PHP | JS in 2 weeks.
 
-Ce projet suit le motif d'architecture MVC.
+__No libraries or frameworks are allowed for this project__
 
-__Note: 125 /100 (note max)__
+__Grade: 125 /100 (max)__
 
-*Sujet disponible --> cf camagru.fr.pdf*
+*French subject --> cf camagru.fr.pdf*
+
+## Getting Started
+
+You need LAMP/MAMP/WAMP to start a web server.
+Git clone parent repo 'portfolio' in the related *AMP folder and browse to 'http://localhost:8080/{your portfolio's folder name}/camagru/'.
+
+## In short
+
+This project is all about coding a first web app' with basic local authentication and connexion system, proper data validation for security concern, webcam streaming and picture capturing with filters/layers added, likes and comments systems, emailing and file uploading, wrapped in a responsive design. MVC design pattern wannabe.
+
