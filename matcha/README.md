@@ -1,8 +1,62 @@
-<h1>Matcha</h1>
+# Matcha
 
-Matcha est le second projet web de 42.
+Web app' for dating lost souls.
 
-Il intervient juste après la réussite de Camagru. Je suis donc à un niveau grand débutant lors de sa réalisation.
+
+## Subject
+
+Matcha is the second 42's web project.
+
+### Only micro-framework allowed. ORM, validator and users module are forbidden
+
+__Grade: 125 /100 (max)__
+
+*French subject --> cf matcha.fr.pdf*
+
+
+## Stack
+
+- PHP slim micro-framework
+- twig template engine
+- twitter bootstrap
+- jquery, ...
+- mySQL
+
+## Getting Started
+
+Git clone parent repo 'portfolio' and open a terminal. 
+
+Create database and dump some fake users :
+```php matcha/app/Config/setup.php```
+
+Start server :
+```sh matcha/launchserver.sh```
+
+Finally, browse to the Document root indicated in the console.
+
+
+## Notes
+
+- Authentication and connexion system:
+    - local
+    - OAuth protocol for facebook and 42 
+- Proper data validation for security concern
+- Edit profile
+- Browse other user's profile / your own
+- Search and filter profiles system
+- Likes and Match systems
+- Chat available for matched users
+- notification system
+- history of likes / visits
+- block specific user
+- Emailing for account validation and forgotten password
+- File uploading for pictures
+- Responsive design
+- MVC design pattern
+- POO
+- call to APIs for geolocalisation
+
+
 
 Il s'agit de concevoir une application permettant à deux potentielles âmes soeurs de se rencontrer, de l’inscription au contact final.
 
