@@ -1,30 +1,79 @@
-<h1>Hypertube</h1>
+# Hypertube
 
-Hypertube est le troisième projet web de 42. Sa validation nous ouvre les portes du premier stage.
+Web app' for downloading/streaming torrents.
 
-Il intervient juste après la réussite de Matcha. Je suis donc à un niveau intermédiaire lors de sa réalisation.
 
-Il s'agit de concevoir une application permettant de streamer des torrents de vidéos.
+## Subject
 
-Un utilisateur devra donc pouvoir s’inscrire, se connecter, compléter son profil, parcourir et rechercher des torrents de videos, les streamer, les commenter.
+Hypertube is the third 42's web project and last before intermediate internship.
 
-Technos libres.
+__Grade: * /100 __
 
-Contraintes:
-  - pas de librairies /modules qui permettent d'obtenir un stream directement.
+*French subject --> cf hypertube.fr.pdf*
 
-Stack :
-  - back :
-      - api RESTful sous node.js express
-      - bdd noSQL mongoDb
 
-  -front :
-    - web app' Vue.JS 2
-    - twitter bootstrap
-    - jquery, ...
+## Stack
+- Back:
+	- Node.js express micro-framework
+	- MongoDb with mongoose ORM
+	- Torrent-stream
+	- FFMPEG
+	- API calls
 
-Protocole OAuth avec les api fcbk et 42 pour la connexion via passport.js.
+- Front:
+	- Vue.js 2 with webpack, vue-router and vue-resource
+	- twitter bootstrap
+	- jquery, moment.js, video.js ...
 
-__Note:  /100 __
+## Getting Started
 
-*Sujet disponible --> cf hypertube.fr.pdf*
+Git clone parent repo 'portfolio' and open a terminal. 
+
+Setup mongoDb :
+```
+mongod --dbpath "{mongoDB path}/.database"
+mongo
+use hypertube
+db.createUser({user: "hypertube", pwd: "hypertube", roles: ["readWrite"]})
+```
+
+Setup Back server :
+```
+npm install hypertube/api
+npm start hypertube/api
+
+```
+
+Setup Front server :
+```
+npm install hypertube/app
+npm run dev hypertube/app
+
+```
+
+## Notes
+
+- API RESTful
+- Single Page App' with Vue.js 2 
+- Authentication and connexion system:
+    - local
+    - OAuth protocol for facebook and 42 
+- Proper data validation for security concern
+- Edit profile
+- Browse other user's profile / your own
+- Browse movies / TV shows
+- Multiple torrent sources
+- Torrent's file selection
+- Downloading torrent
+- Live encoding for video stream
+- Stream video
+- Link video to subtitle's torrent
+- Comments system
+- Search and filter movies / TV shows
+- Seen / Unseen movie systems
+- flash message system
+- Emailing for account validation and forgotten password
+- File uploading
+- Responsive design
+- POO
+- Firefox and Chrome support

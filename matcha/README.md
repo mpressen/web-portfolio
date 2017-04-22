@@ -7,7 +7,7 @@ Web app' for dating lost souls.
 
 Matcha is the second 42's web project.
 
-### Only micro-framework allowed. ORM, validator and users module are forbidden
+### Only micro-framework allowed. ORM, validator and users module are forbidden.
 
 __Grade: 125 /100 (max)__
 
@@ -49,6 +49,7 @@ Finally, browse to the Document root indicated in the console.
 - Likes and Match systems
 - Real-time chat available for matched users
 - notification system
+- flash message system
 - history of likes / visits
 - block specific user
 - Emailing for account validation and forgotten password
