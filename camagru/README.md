@@ -9,7 +9,7 @@ Camagru is the first 42's web project.
 
 It's available after validating the web "piscine", during which we learn the very basics of CSS | HTML | SQL | PHP | JS in 2 weeks.
 
-# No libraries or frameworks are allowed for this project
+### No libraries or frameworks are allowed for this project
 
 __Grade: 125 /100 (max)__
 
