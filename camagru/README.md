@@ -26,11 +26,18 @@ Git clone parent repo 'portfolio' in the related *AMP folder and browse to 'loca
 
 ## Notes
 
-- Local authentication and connexion system, 
+- MySQL with PDO
+- PhpMyAdmin
+- Local authentication and connexion system
 - Proper data validation for security concern
 - Webcam streaming
 - Picture capturing with filters/layers added
 - Likes
 - Comments
- emailing and file uploading, wrapped in a responsive design. MVC design pattern wannabe. No POO yet.
+- Emailing for account validation and forgotten password
+- File uploading
+- Responsive design
+- MVC design pattern wannabe
+- Procedural code
+- Firefox and Chrome support
 

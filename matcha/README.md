@@ -20,7 +20,8 @@ __Grade: 125 /100 (max)__
 - twig template engine
 - twitter bootstrap
 - jquery, ...
-- mySQL
+- mySQL PDO
+- API calls
 
 ## Getting Started
 
@@ -42,10 +43,11 @@ Finally, browse to the Document root indicated in the console.
     - OAuth protocol for facebook and 42 
 - Proper data validation for security concern
 - Edit profile
+- Geolocalisation
 - Browse other user's profile / your own
 - Search and filter profiles system
 - Likes and Match systems
-- Chat available for matched users
+- Real-time chat available for matched users
 - notification system
 - history of likes / visits
 - block specific user
@@ -54,35 +56,4 @@ Finally, browse to the Document root indicated in the console.
 - Responsive design
 - MVC design pattern
 - POO
-- call to APIs for geolocalisation
-
-
-
-Il s'agit de concevoir une application permettant à deux potentielles âmes soeurs de se rencontrer, de l’inscription au contact final.
-
-Un utilisateur devra donc pouvoir s’inscrire, se connecter, compléter son profil, parcourir et rechercher d’autres utilisateurs, les liker, et chatter avec ceux qui auront liké en retour.
-
-Technos autorisés:
-  - Choix du langage libre.
-  - micro-framework (ex: slim pour php, expressjs pour nodejs ...). 
-  - librairies externes.
-
-Contraintes:
-  - pas d’ORM.
-  - pas de validateurs.
-  - pas de gestion de comptes utilisateurs.
-  - compatible sur Firefox (>= 41) et Chrome (>= 46).
-  - présentable sur mobile, et une mise en page acceptable sur de petites résolutions.
-
-Stack :
-  - slim micro-framework PHP
-  - mySQL PDO
-  - twig moteur de templates
-  - twitter bootstrap
-  - jquery, ...
-
-Ce projet suit le motif d'architecture MVC et la POO. Protocole OAuth avec les api fcbk et 42 pour l'inscription
-
-__Note: 125 /100 (note max)__
-
-*Sujet disponible --> cf matcha.fr.pdf*
+- Firefox and Chrome support
