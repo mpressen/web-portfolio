@@ -1,13 +1,13 @@
 # Hypertube
 
-Web app' for downloading/streaming torrents.
+Web app' for downloading/streaming torrents. Group project. I worked on the front part.
 
 
 ## Subject
 
 Hypertube is the third 42's web project and last before intermediate internship.
 
-__Grade: * /100 __
+__Grade: 125 / 100 (max)__
 
 *French subject --> cf hypertube.fr.pdf*
 
@@ -53,6 +53,7 @@ npm run dev hypertube/app
 
 ## Notes
 
+- Team work
 - API RESTful
 - Single Page App' with Vue.js 2 
 - Authentication and connexion system:
