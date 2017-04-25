@@ -1,3 +1,3 @@
 # web-portfolio
 
-cf README.md des projets respectifs
+Please read respective project's README.md for details.
