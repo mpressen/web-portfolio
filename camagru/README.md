@@ -12,7 +12,7 @@ It's available after validating the web "piscine", during which we learn the ver
 ### No libraries or frameworks are allowed for this project
 
 
-__Grade: 125 /100 (max)__
+__Grade: 125 / 100 (max)__
 
 *French subject --> cf camagru.fr.pdf*
 

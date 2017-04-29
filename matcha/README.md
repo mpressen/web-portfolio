@@ -9,7 +9,7 @@ Matcha is the second 42's web project.
 
 ### Only micro-framework allowed. ORM, validator and users module are forbidden.
 
-__Grade: 125 /100 (max)__
+__Grade: 125 / 100 (max)__
 
 *French subject --> cf matcha.fr.pdf*
 
